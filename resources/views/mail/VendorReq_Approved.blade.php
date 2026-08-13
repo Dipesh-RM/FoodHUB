@@ -588,7 +588,7 @@
 
             <!-- Actions -->
             <div class="actions">
-        <a href="{{ url('admin/vendor') }}" class="btn-primary">
+        <a href="{{ url('vendor/login') }}" class="btn-primary">
                     🚀 Go to Login
                 </a>
                 <a href="" class="btn-secondary">
