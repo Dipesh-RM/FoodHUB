@@ -454,13 +454,13 @@
         <!-- ========================================== -->
         <div class="header">
             <div class="logo-container">
-                <div class="logo-text">Chakhaj<span>za</span></div>
+                <div class="logo-text">Food<span>HUB</span></div>
                 <div class="logo-sub">Discover Local Food</div>
             </div>
 
             <div class="success-icon">✅</div>
             <h1>Your Hotel is Approved! 🎉</h1>
-            <p>Welcome to the Chakhajza family</p>
+            <p>Welcome to the FoodHUB family</p>
         </div>
 
         <!-- ========================================== -->
@@ -472,7 +472,7 @@
             <p class="greeting">Dear <span>{{ $data['name'] ?? 'Vendor' }}</span>,</p>
             <p class="sub-greeting">
                 We are excited to inform you that your hotel <strong>{{ $data['company_name'] ?? 'your hotel' }}</strong>
-                has been <strong style="color: #10B981;">approved</strong> on Chakhajza!
+                has been <strong style="color: #10B981;">approved</strong> on FoodHUB!
                 <br><br>
                 You can now log in to your vendor dashboard and start managing your menu,
                 orders, and connect with customers.
@@ -632,7 +632,7 @@
             </div>
 
             <p class="copyright">
-                &copy; {{ date('Y') }} Chakhajza. All rights reserved.
+                &copy; {{ date('Y') }} FoodHUB. All rights reserved.
             </p>
         </div>
 

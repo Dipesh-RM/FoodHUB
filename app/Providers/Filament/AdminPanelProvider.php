@@ -21,14 +21,16 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class AdminPanelProvider extends PanelProvider
 {
+
     public function panel(Panel $panel): Panel
     {
         return $panel
             ->default()
             ->id('admin')
             ->path('admin')
+            //->brandLogo(asset('storage/1786614899.png'))
             ->brandName('FoodHUB Vendors Management')
-            ->brandLogo(asset('storage/1786614899.png'))
+
             ->login()
             //->registration()
             ->authPasswordBroker('admins')

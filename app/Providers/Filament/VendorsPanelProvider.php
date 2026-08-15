@@ -19,25 +19,24 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
-class VendorPanelProvider extends PanelProvider
+class VendorsPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->id('vendor')
+            ->id('vendors')
             ->path('vendor')
             ->login()
-            ->registration()
             ->authGuard('vendor')
             ->colors([
                 'primary' => Color::Amber,
             ])
-            ->discoverResources(in: app_path('Filament/Vendor/Resources'), for: 'App\Filament\Vendor\Resources')
-            ->discoverPages(in: app_path('Filament/Vendor/Pages'), for: 'App\Filament\Vendor\Pages')
+            ->discoverResources(in: app_path('Filament/Vendors/Resources'), for: 'App\Filament\Vendors\Resources')
+            ->discoverPages(in: app_path('Filament/Vendors/Pages'), for: 'App\Filament\Vendors\Pages')
             ->pages([
                 Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Vendor/Widgets'), for: 'App\Filament\Vendor\Widgets')
+            ->discoverWidgets(in: app_path('Filament/Vendors/Widgets'), for: 'App\Filament\Vendors\Widgets')
             ->widgets([
                 AccountWidget::class,
                 FilamentInfoWidget::class,

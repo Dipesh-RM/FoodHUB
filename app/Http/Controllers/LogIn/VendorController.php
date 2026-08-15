@@ -56,7 +56,7 @@ class VendorController extends Controller
         $vendor->save();
         //Email send to admin
         //$admin = Admin::first();
-        Mail::to("dipeshrana255@gmail.com")->send(new VendorReq_Notification($vendor));
+        Mail::to("dipeshrana393c@gmail.com")->send(new VendorReq_Notification($vendor));
 
         return redirect()->route('Frontend.VendorSuccess')
             ->with('success', 'Registration submitted successfully! We have sent you an email with your login credentials.');

@@ -20,13 +20,15 @@ class EditVendors extends EditRecord
             DeleteAction::make(),
         ];
     }
-    #[Override]
-    protected function mutateFormDataBeforeFill(array $data): array
-    {   if($data["status"] == "approved"){
+ #[Override]
+ protected function mutateFormDataBeforeSave(array $data): array
+ {
+    if($data["status"] == "approved"){
         $password = rand(30000,99999);
         $data['password'] = Hash::make($password);
-        Mail::to($data['email'])->send(new VendorReq_Approved($data,$password));
+
+ Mail::to($data['email'])->send(new VendorReq_Approved($data,$password));
     }
-        return parent::mutateFormDataBeforeFill($data);
-    }
+    return parent::mutateFormDataBeforeSave($data);
+}
 }
