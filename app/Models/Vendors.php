@@ -22,6 +22,7 @@ class Vendors extends Authenticatable
         'name',
         'email',
         'password',
+        'must_change_password'
     ];
 
     /**
@@ -44,6 +45,7 @@ class Vendors extends Authenticatable
         return [
 
             'password' => 'hashed',
+            'must_change_password' => 'boolean',
         ];
     }
       public function menu_items(){

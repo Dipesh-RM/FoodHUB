@@ -26,7 +26,9 @@ class VendorsPanelProvider extends PanelProvider
         return $panel
             ->id('vendors')
             ->path('vendor')
-            ->login()
+            ->login(\App\Filament\Vendors\Pages\Auth\Login::class)
+            ->authPasswordBroker('vendors')
+            ->passwordReset()
             ->authGuard('vendor')
             ->colors([
                 'primary' => Color::Amber,
@@ -54,6 +56,7 @@ class VendorsPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+                \App\Http\Middleware\ForceVendorPasswordChange::class,
             ]);
     }
 }
