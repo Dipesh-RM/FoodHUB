@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use Filament\Actions\Action;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -26,7 +27,13 @@ class VendorsPanelProvider extends PanelProvider
         return $panel
             ->id('vendors')
             ->path('vendor')
-            ->login(\App\Filament\Vendors\Pages\Auth\Login::class)
+            ->login()
+            ->profile()
+           ->profile()
+->userMenuItems([
+    'profile' => fn (Action $action) => $action
+     ->label(fn () => auth('admin')->user()?->name ?? 'Profile'),
+])
             ->authPasswordBroker('vendors')
             ->passwordReset()
             ->authGuard('vendor')

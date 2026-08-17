@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Filament\Resources\Vendors\Pages;
+namespace App\Filament\Vendors\Resources\Vendors\Pages;
 
-use App\Filament\Resources\Vendors\VendorsResource;
-use Filament\Actions\CreateAction;
+use App\Filament\Vendors\Resources\Vendors\VendorsResource;
+
 use Filament\Resources\Pages\ListRecords;
 
 class ListVendors extends ListRecords
@@ -13,7 +13,7 @@ class ListVendors extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-          //  CreateAction::make(),
+           // CreateAction::make(),
         ];
     }
 }

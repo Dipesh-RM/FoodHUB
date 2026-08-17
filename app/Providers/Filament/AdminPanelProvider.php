@@ -28,12 +28,14 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            
             //->brandLogo(asset('storage/1786614899.png'))
             ->brandName('FoodHUB Vendors Management')
 
             ->login()
             //->registration()
             ->authPasswordBroker('admins')
+
             ->passwordReset()
             ->authGuard('admin')
             ->colors([

@@ -1,19 +1,18 @@
 <?php
 
-namespace App\Filament\Resources\Vendors;
+namespace App\Filament\Vendors\Resources\Vendors;
 
-use App\Filament\Resources\Vendors\Pages\CreateVendors;
-use App\Filament\Resources\Vendors\Pages\EditVendors;
-use App\Filament\Resources\Vendors\Pages\ListVendors;
-use App\Filament\Resources\Vendors\Schemas\VendorsForm;
-use App\Filament\Resources\Vendors\Tables\VendorsTable;
+use App\Filament\Vendors\Resources\Vendors\Pages\CreateVendors;
+use App\Filament\Vendors\Resources\Vendors\Pages\EditVendors;
+use App\Filament\Vendors\Resources\Vendors\Pages\ListVendors;
+use App\Filament\Vendors\Resources\Vendors\Schemas\VendorsForm;
+use App\Filament\Vendors\Resources\Vendors\Tables\VendorsTable;
 use App\Models\Vendors;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
-use Override;
 
 class VendorsResource extends Resource
 {
@@ -22,12 +21,12 @@ class VendorsResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'Vendors';
-
-    #[Override]
+   
     public static function canCreate(): bool
     {
         return false;
     }
+
 
     public static function form(Schema $schema): Schema
     {

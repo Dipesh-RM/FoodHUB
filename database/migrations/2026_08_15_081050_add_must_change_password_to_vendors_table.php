@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('vendors', function (Blueprint $table) {
             Schema::table('vendors', function (Blueprint $table) {
-        $table->boolean('must_change_password')->default(false);
+        $table->boolean('must_change_password')->default(true);
     });
         });
     }
