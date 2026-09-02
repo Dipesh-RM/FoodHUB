@@ -31,6 +31,21 @@ class VendorsForm
                     ->required(),
                 TextInput::make('contact_no')
                     ->required(),
+                // TextInput::make('city')
+                //     ->required()
+                //     ->maxLength(100),
+
+                // Textarea::make('address')
+                //     ->required()
+                //     ->rows(3),
+
+                // TextInput::make('latitude')
+                //     ->numeric()
+                //     ->nullable(),
+
+                // TextInput::make('longitude')
+                //     ->numeric()
+                //     ->nullable(),
                 // Select::make('status')
                 //     ->options(['pending' => 'Pending', 'approved' => 'Approved', 'rejected' => 'Rejected'])
                 //     ->default('pending')

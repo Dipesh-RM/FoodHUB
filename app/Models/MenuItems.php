@@ -4,13 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Menu_items extends Model
+class MenuItems extends Model
 {
+
    public function category(){
     return $this->belongsTo(Category::class);
    }
    public function vendors(){
-    return $this->belongsTo(Vendors::class);
+    return $this->belongsTo(Vendors::class,'vendor_id');
    }
    public function charts(){
     return $this->hasMany(Chart::class);
@@ -21,4 +22,5 @@ class Menu_items extends Model
    public function orderitems(){
     return $this->hasMany(OrderItem::class);
    }
+
 }

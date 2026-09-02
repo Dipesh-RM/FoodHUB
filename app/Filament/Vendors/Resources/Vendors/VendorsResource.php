@@ -13,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class VendorsResource extends Resource
 {
@@ -21,7 +22,7 @@ class VendorsResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'Vendors';
-   
+
     public static function canCreate(): bool
     {
         return false;
@@ -53,4 +54,10 @@ class VendorsResource extends Resource
             'edit' => EditVendors::route('/{record}/edit'),
         ];
     }
+    //IN venoder pannel show only specific vendor only
+  public static function getEloquentQuery(): Builder
+{
+    return parent::getEloquentQuery()
+        ->where('id', auth('vendor')->id());
+}
 }

@@ -52,6 +52,8 @@ class VendorController extends Controller
             $file->move('storage', $file_name);
             $vendor->logo = $file_name;
         }
+        $vendor->city=$request->city;
+        $vendor->address=$request->address;
         $vendor->contact_no = $request->contact_no;
         $vendor->save();
         //Email send to admin

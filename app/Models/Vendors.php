@@ -19,10 +19,14 @@ class Vendors extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'must_change_password'
+    'name',
+    'email',
+    'password',
+    'must_change_password',
+    'city',
+    'address',
+    'latitude',
+    'longitude',
     ];
 
     /**
@@ -43,13 +47,15 @@ class Vendors extends Authenticatable
     protected function casts(): array
     {
         return [
+ 'password' => 'hashed',
+        'must_change_password' => 'boolean',
+        'latitude' => 'decimal:7',
+        'longitude' => 'decimal:7',
 
-            'password' => 'hashed',
-            'must_change_password' => 'boolean',
         ];
     }
-      public function menu_items(){
-        return $this->hasMany(Menu_items::class);
+      public function menuItems(){
+        return $this->hasMany(MenuItems::class,'vendor_id');
     }
     public function chart(){
         return $this->hasMany(Chart::class);
@@ -63,5 +69,9 @@ class Vendors extends Authenticatable
     public function reviews(){
         return $this->hasMany(Review::class);
     }
+    public function categories()
+{
+    return $this->hasMany(Category::class, 'vendor_id');
+}
 
 }

@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     public function vendors(){
-        return $this->belongsTo(Vendors::class);
+        return $this->belongsTo(Vendors::class, 'vendor_id');
     }
     public function menuitems(){
-        return $this->hasMany(Menu_items::class);
+        return $this->hasMany(MenuItems::class);
     }
 }
