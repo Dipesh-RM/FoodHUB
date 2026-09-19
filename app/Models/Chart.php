@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Chart extends Model
 {
+       public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
     public function menu_items(){
         return $this->belongsTo(MenuItems::class);
     }

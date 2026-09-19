@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -27,10 +26,10 @@
                 <a href="{{ route('home') }}" class="flex items-center space-x-2 group">
                     <div
                         class="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center text-white font-bold text-xl">
-                        <span>ख</span>
+                        <span>F</span>
                     </div>
                     <div>
-                        <span class="text-2xl font-heading font-bold text-primary">Chakhajza</span>
+                        <span class="text-2xl font-heading font-bold text-primary">FoodHUB</span>
                         <span
                             class="block text-[10px] text-gray-400 -mt-0.5 font-medium tracking-wider uppercase">Discover
                             Local Food</span>
@@ -41,7 +40,7 @@
                 <div class="flex items-center space-x-2 md:space-x-4">
 
                     <!-- Cart -->
-                    <a href="" class="relative text-gray-700 hover:text-primary p-2">
+                    <a href="{{ route('cart') }}" class="relative text-gray-700 hover:text-primary p-2">
                         <i class="fas fa-shopping-bag text-xl"></i>
                         <span
                             class="absolute -top-0.5 -right-0.5 bg-primary text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-lg cart-badge">
@@ -336,6 +335,7 @@
                                         class="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">+{{ $hotel->menuItems->count() - 3 }}</span>
                                 @endif
                             </div>
+
                             <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
                                 <span class="text-sm text-gray-500">Min. order: <span
                                         class="font-semibold text-gray-700">$10</span></span>
@@ -443,10 +443,17 @@
                                             class="text-lg font-bold text-primary">${{ number_format($item->price, 2) }}</span>
                                     @endif
                                 </div>
-                                <button class="btn-primary py-1.5 px-4 text-sm add-to-cart"
-                                    data-id="{{ $item->id }}">
-                                    <i class="fas fa-plus mr-1"></i> Add
-                                </button>
+                                @auth
+                                    <button
+                                        onclick="addToCart({{ $item->id }}, '{{ addslashes($item->tittle) }}', {{ $item->price - ($item->dicount ?? 0) }})"
+                                        class="btn-primary py-1.5 px-4 text-sm">
+                                        <i class="fas fa-plus mr-1"></i> Add
+                                    </button>
+                                @else
+                                    <button class="btn-primary py-1.5 px-4 text-sm">
+                                       <a href="{{ route('login') }}"> <i class="fas fa-plus mr-1"></i> Add</a>
+                                    </button>
+                                @endauth
                             </div>
                         </div>
                     </div>
@@ -579,93 +586,53 @@
         </div>
     </section>
 
-    @push('scripts')
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                // ============================================
-                // AUTOCOMPLETE / SEARCH SUGGESTIONS
-                // ============================================
-                const searchInput = document.getElementById('search-input');
-                const locationInput = document.getElementById('location-input');
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // ============================================
+            // SEARCH AND LOCATION FUNCTIONS
+            // ============================================
+            const searchInput = document.getElementById('search-input');
+            const locationInput = document.getElementById('location-input');
 
-                // Simple autocomplete for search
-                if (searchInput) {
-                    searchInput.addEventListener('input', function() {
-                        const query = this.value;
-                        if (query.length > 2) {
-                            // You can implement AJAX search suggestions here
-                            console.log('Searching for:', query);
-                        }
-                    });
-                }
-
-                // ============================================
-                // ADD TO CART FUNCTIONALITY
-                // ============================================
-                document.querySelectorAll('.add-to-cart').forEach(button => {
-                    button.addEventListener('click', function() {
-                        const itemId = this.dataset.id;
-                        // Add to cart logic here
-                        this.innerHTML = '<i class="fas fa-check mr-1"></i> Added';
-                        this.classList.remove('btn-primary');
-                        this.classList.add('bg-green-500', 'hover:bg-green-600');
-
-                        setTimeout(() => {
-                            this.innerHTML = '<i class="fas fa-plus mr-1"></i> Add';
-                            this.classList.remove('bg-green-500', 'hover:bg-green-600');
-                            this.classList.add('btn-primary');
-                        }, 2000);
-                    });
+            if (searchInput) {
+                searchInput.addEventListener('input', function() {
+                    const query = this.value;
+                    if (query.length > 2) {
+                        console.log('Searching for:', query);
+                    }
                 });
+            }
 
-                // ============================================
-                // LOCATION AUTO-DETECT
-                // ============================================
-                if (navigator.geolocation && locationInput) {
-                    const detectBtn = document.createElement('button');
-                    detectBtn.type = 'button';
-                    detectBtn.className =
-                        'absolute right-3 top-1/2 -translate-y-1/2 text-primary hover:text-primary-dark text-sm font-medium';
-                    detectBtn.innerHTML = '<i class="fas fa-crosshairs"></i> Detect';
-                    detectBtn.title = 'Detect my location';
+            // ============================================
+            // HOME PAGE ADD TO CART
+            // ============================================
+            document.querySelectorAll('.home-add-to-cart').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
 
-                    const parent = locationInput.parentElement;
-                    parent.style.position = 'relative';
-                    parent.appendChild(detectBtn);
+                    const id = this.dataset.id;
+                    const name = this.dataset.name;
+                    const price = parseFloat(this.dataset.price);
 
-                    detectBtn.addEventListener('click', function() {
-                        navigator.geolocation.getCurrentPosition(
-                            function(position) {
-                                // Convert coordinates to city name using reverse geocoding
-                                fetch(
-                                        `https://api.opencagedata.com/geocode/v1/json?q=${position.coords.latitude}+${position.coords.longitude}&key=YOUR_API_KEY`
-                                        )
-                                    .then(response => response.json())
-                                    .then(data => {
-                                        if (data.results && data.results.length > 0) {
-                                            const components = data.results[0].components;
-                                            const city = components.city || components.town ||
-                                                components.village || 'Unknown';
-                                            locationInput.value = city;
-                                        }
-                                    })
-                                    .catch(() => {
-                                        locationInput.value = 'Kathmandu';
-                                    });
-                            },
-                            function() {
-                                // Fallback
-                                locationInput.placeholder = 'Enter location manually';
-                            }
-                        );
-                    });
-                }
+                    if (typeof window.addToCart === 'function') {
+                        window.addToCart(id, name, price);
+                    }
+
+                    const originalHTML = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-check mr-1"></i> Added';
+                    this.classList.remove('btn-primary');
+                    this.classList.add('bg-green-500', 'hover:bg-green-600');
+                    setTimeout(() => {
+                        this.innerHTML = originalHTML;
+                        this.classList.remove('bg-green-500', 'hover:bg-green-600');
+                        this.classList.add('btn-primary');
+                    }, 2000);
+                });
             });
-        </script>
+        });
+    </script>
 
 
+</body>
 
-
-    </body>
-
-    </html>
+</html>

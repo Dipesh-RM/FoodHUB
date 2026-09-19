@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     @vite(['resources/css/app.css','resources/js/app.js'])
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
 
@@ -131,20 +132,31 @@
                                                 @endif
                                             </div>
                                         </div>
-                                        <div class="text-right mt-3 sm:mt-0">
-                                            @if($item->dicount > 0)
-                                                <p class="text-sm text-gray-400 line-through">${{ number_format($item->price, 2) }}</p>
-                                                <p class="text-xl font-bold text-primary">${{ number_format($item->price - $item->dicount, 2) }}</p>
-                                            @else
-                                                <p class="text-xl font-bold text-primary">${{ number_format($item->price, 2) }}</p>
-                                            @endif
-                                            <button class="btn-primary py-1.5 px-4 text-sm mt-1 flex items-center gap-1 add-to-cart"
-                                                    data-id="{{ $item->id }}"
-                                                    data-name="{{ $item->tittle }}"
-                                                    data-price="{{ $item->price - $item->dicount }}">
-                                                <i class="fas fa-plus"></i> Add
-                                            </button>
-                                        </div>
+                                        {{-- resources/views/Frontend/pages/hotel-menu.blade.php --}}
+
+<div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
+    <span class="text-lg font-bold text-primary">
+        @if($item->dicount > 0)
+            <span class="text-sm text-gray-400 line-through">${{ number_format($item->price, 2) }}</span>
+            <span class="text-lg font-bold text-primary ml-1">${{ number_format($item->price - $item->dicount, 2) }}</span>
+        @else
+            ${{ number_format($item->price, 2) }}
+        @endif
+    </span>
+   @auth
+
+    <button class="btn-primary py-1.5 px-4 text-sm menu-add-to-cart"
+            data-id="{{ $item->id }}"
+            data-name="{{ $item->tittle }}"
+            data-price="{{ $item->price - ($item->dicount ?? 0) }}">
+        <i class="fas fa-plus mr-1"></i> Add
+    </button>
+    @else
+        <button class="btn-primary py-1.5 px-4 text-sm ">
+        <a href="{{ route('login') }}"><i class="fas fa-plus mr-1"></i> Add</a>
+    </button>
+    @endauth
+</div>
                                     </div>
                                 </div>
                             </div>
@@ -198,144 +210,88 @@
     </a>
 </div>
 
-@push('scripts')
-<script>
-    // ============================================
-    // SMOOTH SCROLL FOR CATEGORIES
-    // ============================================
-    document.querySelectorAll('.category-link').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
 
-            // Update active state
-            document.querySelectorAll('.category-link').forEach(link => {
-                link.classList.remove('bg-primary/10', 'text-primary', 'font-medium');
-                link.classList.add('text-gray-700');
-            });
-            this.classList.add('bg-primary/10', 'text-primary', 'font-medium');
-            this.classList.remove('text-gray-700');
-        });
-    });
 
-    // ============================================
-    // ACTIVE CATEGORY HIGHLIGHT ON SCROLL
-    // ============================================
-    const categoryLinks = document.querySelectorAll('.category-link');
-    const sections = document.querySelectorAll('.scroll-mt-24');
 
-    window.addEventListener('scroll', () => {
-        let current = '';
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop - 100;
-            if (window.scrollY >= sectionTop) {
-                current = section.getAttribute('id');
-            }
-        });
-
-        categoryLinks.forEach(link => {
-            link.classList.remove('bg-primary/10', 'text-primary', 'font-medium');
-            link.classList.add('text-gray-700');
-            if (link.getAttribute('href') === `#${current}`) {
-                link.classList.add('bg-primary/10', 'text-primary', 'font-medium');
-                link.classList.remove('text-gray-700');
-            }
-        });
-    });
-
-    // ============================================
-    // CART FUNCTIONALITY
-    // ============================================
-    let cartItems = [];
-    let cartTotal = 0;
-
-    // Add to Cart
-    document.querySelectorAll('.add-to-cart').forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-
-            const id = this.dataset.id;
-            const name = this.dataset.name;
-            const price = parseFloat(this.dataset.price);
-
-            // Check if item already in cart
-            const existingItem = cartItems.find(item => item.id === id);
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
-                cartItems.push({
-                    id: id,
-                    name: name,
-                    price: price,
-                    quantity: 1
+    <!-- 2. Page Specific Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // ============================================
+            // SMOOTH SCROLL FOR CATEGORIES
+            // ============================================
+            document.querySelectorAll('.category-link').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                    document.querySelectorAll('.category-link').forEach(link => {
+                        link.classList.remove('bg-primary/10', 'text-primary', 'font-medium');
+                        link.classList.add('text-gray-700');
+                    });
+                    this.classList.add('bg-primary/10', 'text-primary', 'font-medium');
+                    this.classList.remove('text-gray-700');
                 });
-            }
+            });
 
-            // Update cart total
-            updateCart();
+            // ============================================
+            // ACTIVE CATEGORY HIGHLIGHT ON SCROLL
+            // ============================================
+            const categoryLinks = document.querySelectorAll('.category-link');
+            const sections = document.querySelectorAll('.scroll-mt-24');
 
-            // Button feedback
-            const originalText = this.innerHTML;
-            this.innerHTML = '<i class="fas fa-check"></i> Added';
-            this.classList.remove('btn-primary');
-            this.classList.add('bg-green-500', 'hover:bg-green-600');
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - 100;
+                    if (window.scrollY >= sectionTop) {
+                        current = section.getAttribute('id');
+                    }
+                });
 
-            setTimeout(() => {
-                this.innerHTML = originalText;
-                this.classList.remove('bg-green-500', 'hover:bg-green-600');
-                this.classList.add('btn-primary');
-            }, 1500);
+                categoryLinks.forEach(link => {
+                    link.classList.remove('bg-primary/10', 'text-primary', 'font-medium');
+                    link.classList.add('text-gray-700');
+                    if (link.getAttribute('href') === `#${current}`) {
+                        link.classList.add('bg-primary/10', 'text-primary', 'font-medium');
+                        link.classList.remove('text-gray-700');
+                    }
+                });
+            });
+
+            // ============================================
+            // HOTEL MENU ADD TO CART
+            // ============================================
+            document.querySelectorAll('.menu-add-to-cart').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    const id = this.dataset.id;
+                    const name = this.dataset.name;
+                    const price = parseFloat(this.dataset.price);
+
+                    if (typeof window.addToCart === 'function') {
+                        window.addToCart(id, name, price);
+                    } else {
+                        console.error('addToCart not loaded!');
+                    }
+
+                    // Button feedback
+                    const originalHTML = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-check mr-1"></i> Added';
+                    this.classList.remove('btn-primary');
+                    this.classList.add('bg-green-500', 'hover:bg-green-600');
+                    setTimeout(() => {
+                        this.innerHTML = originalHTML;
+                        this.classList.remove('bg-green-500', 'hover:bg-green-600');
+                        this.classList.add('btn-primary');
+                    }, 2000);
+                });
+            });
         });
-    });
+    </script>
 
-    // Update Cart Display
-    function updateCart() {
-        let totalItems = 0;
-        let totalPrice = 0;
-
-        cartItems.forEach(item => {
-            totalItems += item.quantity;
-            totalPrice += item.price * item.quantity;
-        });
-
-        cartTotal = totalPrice;
-
-        // Update mobile cart
-        document.getElementById('mobile-cart-total').textContent = '$' + totalPrice.toFixed(2);
-        document.getElementById('mobile-cart-count').textContent = totalItems;
-
-        // Update desktop cart
-        document.getElementById('desktop-cart-total').textContent = '$' + totalPrice.toFixed(2);
-        document.getElementById('desktop-cart-count').textContent = totalItems;
-
-        // Store cart in localStorage
-        localStorage.setItem('cart', JSON.stringify(cartItems));
-        localStorage.setItem('cartTotal', totalPrice.toString());
-    }
-
-    // Load cart from localStorage
-    function loadCart() {
-        const savedCart = localStorage.getItem('cart');
-        const savedTotal = localStorage.getItem('cartTotal');
-
-        if (savedCart) {
-            cartItems = JSON.parse(savedCart);
-        }
-        if (savedTotal) {
-            cartTotal = parseFloat(savedTotal);
-        }
-
-        updateCart();
-    }
-
-    // Load cart on page load
-    document.addEventListener('DOMContentLoaded', function() {
-        loadCart();
-    });
-</script>
 
 </body>
 </html>
