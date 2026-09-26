@@ -186,10 +186,10 @@
 
                 <!-- Action Buttons -->
                 <div class="flex flex-col sm:flex-row gap-3">
-                    <a href="" class="btn-primary py-3 px-8 text-center flex-1">
+                    <a href="http://127.0.0.1:8000/vendor" class="btn-primary py-3 px-8 text-center flex-1">
                         <i class="fas fa-tachometer-alt mr-2"></i> Go to Dashboard
                     </a>
-                    <a href="" class="btn-outline py-3 px-8 text-center flex-1">
+                    <a href="/" class="btn-outline py-3 px-8 text-center flex-1">
                         <i class="fas fa-home mr-2"></i> Back to Home
                     </a>
                 </div>

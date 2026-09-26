@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Chart;
 use App\Models\MenuItem;
+use App\Models\MenuItems;
 use App\Models\Vendors;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +17,7 @@ class CartController extends Controller
      */
     public function index()
     {
-      
+
         $cartItems = Chart::where('user_id', Auth::id())
                           ->with(['vendor', 'menuItem'])
                           ->get();
@@ -48,7 +49,7 @@ class CartController extends Controller
             ], 401);
         }
 
-        $menuItem = MenuItem::findOrFail($request->menu_item_id);
+        $menuItem = MenuItems::findOrFail($request->menu_item_id);
 
         // Check if item already in cart
         $existingCart = Chart::where('user_id', Auth::id())

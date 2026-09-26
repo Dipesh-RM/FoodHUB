@@ -134,23 +134,27 @@
                                         </div>
                                         {{-- resources/views/Frontend/pages/hotel-menu.blade.php --}}
 
-<div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
+<div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100 gap-3">
     <span class="text-lg font-bold text-primary">
         @if($item->dicount > 0)
-            <span class="text-sm text-gray-400 line-through">${{ number_format($item->price, 2) }}</span>
-            <span class="text-lg font-bold text-primary ml-1">${{ number_format($item->price - $item->dicount, 2) }}</span>
+            <span class="text-sm text-gray-400 line-through">Rs.{{ number_format($item->price, 2) }}</span>
+            <span class="text-lg font-bold text-primary ml-1">Rs.{{ number_format($item->price - $item->dicount, 2) }}</span>
         @else
-            ${{ number_format($item->price, 2) }}
+            Rs.{{ number_format($item->price ) }}
         @endif
     </span>
    @auth
-
-    <button class="btn-primary py-1.5 px-4 text-sm menu-add-to-cart"
-            data-id="{{ $item->id }}"
-            data-name="{{ $item->tittle }}"
-            data-price="{{ $item->price - ($item->dicount ?? 0) }}">
-        <i class="fas fa-plus mr-1"></i> Add
-    </button>
+    <button
+    onclick="addToCart(
+        {{ $item->id }},
+        @js($item->tittle),
+        {{ $item->price - ($item->dicount ?? 0) }},
+        @js($item->image ? asset('storage/' . $item->image) : ''),
+        1
+    )"
+    class="btn-primary py-1.5 px-4 text-sm menu-add-to-cart">
+    <i class="fas fa-plus mr-1"></i> Add
+</button>
     @else
         <button class="btn-primary py-1.5 px-4 text-sm ">
         <a href="{{ route('login') }}"><i class="fas fa-plus mr-1"></i> Add</a>
@@ -286,7 +290,7 @@
                         this.innerHTML = originalHTML;
                         this.classList.remove('bg-green-500', 'hover:bg-green-600');
                         this.classList.add('btn-primary');
-                    }, 2000);
+                    }, 1000);
                 });
             });
         });

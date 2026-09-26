@@ -13,7 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
-
+use Illuminate\Database\Eloquent\Builder;
 class MenuItemsResource extends Resource
 {         public static function mutateFormDataBeforeCreate(array $data): array
     {
@@ -21,6 +21,11 @@ class MenuItemsResource extends Resource
 
         return $data;
     }
+      public static function getEloquentQuery(): Builder
+{
+    return parent::getEloquentQuery()
+        ->where('vendor_id', auth()->id());
+}
     protected static ?string $model = MenuItems::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;

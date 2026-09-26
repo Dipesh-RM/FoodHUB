@@ -77,7 +77,7 @@
 
                         <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
                             <span class="text-sm text-gray-500">Min. order: <span class="font-semibold text-gray-700">$10</span></span>
-                            <a href="{{ route('hotels.show', $vendor->id) }}" class="btn-primary py-2 px-4 text-sm">View Menu</a>
+                            <a href="{{ route('hotels.menu', $vendor->id) }}" class="btn-primary py-2 px-4 text-sm">View Menu</a>
                         </div>
                     </div>
                 </div>

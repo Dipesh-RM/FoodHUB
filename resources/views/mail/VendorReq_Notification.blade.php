@@ -460,7 +460,7 @@
             </div>
 
             <p class="copyright">
-                &copy; {{ date('Y') }} Chakhajza. All rights reserved.
+                &copy; {{ date('Y') }} FoodHUB. All rights reserved.
             </p>
         </div>
 

@@ -4,8 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cart - Chakhajza</title>
+    <title>Cart - FoodHUB</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+<script>
+    const checkoutUrl = "{{ route('checkout') }}";
+</script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
@@ -15,7 +18,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16 md:h-20">
                 <a href="/" class="flex items-center space-x-2">
-                    <span class="text-2xl font-heading font-bold text-primary">Chakhajza</span>
+                    <span class="text-2xl font-heading font-bold text-primary">FoodHUB</span>
                 </a>
                 <div class="flex items-center space-x-4">
                     <a href="/cart" class="relative text-gray-700 hover:text-primary p-2">
@@ -37,8 +40,9 @@
             <div id="cart-container"></div>
 
             <!-- Order Summary -->
-            <div id="order-summary" class="mt-8 max-w-md ml-auto"></div>
+            <div id="order-summary"  class="mt-8 max-w-md ml-auto"></div>
         </div>
+
     </section>
 </body>
 </html>

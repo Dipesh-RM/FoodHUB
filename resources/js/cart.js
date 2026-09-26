@@ -42,8 +42,7 @@ function updateCartBadge() {
 
 // ============================================
 // ADD TO CART - MAIN FUNCTION
-// ============================================
-function addToCart(itemId, itemName, itemPrice, quantity = 1) {
+function addToCart(itemId, itemName, itemPrice, itemImage = '', quantity = 1) {
     if (!itemId || !itemName || isNaN(itemPrice)) {
         console.error('Invalid item data:', { itemId, itemName, itemPrice });
         return;
@@ -54,11 +53,16 @@ function addToCart(itemId, itemName, itemPrice, quantity = 1) {
 
     if (existingItem) {
         existingItem.quantity += quantity;
+        // Update image in case it was missing before
+        if (!existingItem.image && itemImage) {
+            existingItem.image = itemImage;
+        }
     } else {
         cart.push({
             id: parseInt(itemId),
             name: itemName,
             price: parseFloat(itemPrice),
+            image: itemImage,   // <-- store the image
             quantity: quantity
         });
     }
@@ -196,7 +200,7 @@ function renderCart() {
                     </div>
                 </td>
                 <td class="px-4 py-4 text-right">
-                    <span class="text-sm text-gray-600">$${item.price.toFixed(2)}</span>
+                    <span class="text-sm text-gray-600">$${item.price}</span>
                 </td>
                 <td class="px-4 py-4 text-right">
                     <span class="font-semibold text-primary" id="item-total-${item.id}">$${itemTotal}</span>
@@ -236,28 +240,28 @@ function renderCart() {
                 <div class="space-y-3">
                     <div class="flex justify-between">
                         <span class="text-gray-600">Subtotal</span>
-                        <span class="font-semibold">$${subtotal.toFixed(2)}</span>
+                        <span class="font-semibold">Rs.${subtotal}</span>
                     </div>
                     <div class="flex justify-between">
                         <span class="text-gray-600">Delivery Fee</span>
-                        <span class="font-semibold">$${deliveryFee.toFixed(2)}</span>
+                        <span class="font-semibold">Rs.${deliveryFee}</span>
                     </div>
                     <div class="flex justify-between">
                         <span class="text-gray-600">Service Charge (10%)</span>
-                        <span class="font-semibold">$${serviceCharge.toFixed(2)}</span>
+                        <span class="font-semibold">Rs.${serviceCharge}</span>
                     </div>
                     <div class="flex justify-between">
                         <span class="text-gray-600">Tax (13%)</span>
-                        <span class="font-semibold">$${tax.toFixed(2)}</span>
+                        <span class="font-semibold">Rs.${tax}</span>
                     </div>
                     <div class="border-t border-gray-200 pt-3">
                         <div class="flex justify-between">
                             <span class="text-lg font-heading font-bold text-secondary">Total</span>
-                            <span class="text-2xl font-heading font-bold text-primary">$${total.toFixed(2)}</span>
+                            <span class="text-2xl font-heading font-bold text-primary">Rs.${total}</span>
                         </div>
                     </div>
                 </div>
-                <a href="/checkout" class="btn-primary w-full text-center py-3 mt-4 flex items-center justify-center gap-2">
+                <a href="${checkoutUrl}" class="btn-primary w-full text-center py-3 mt-4 flex items-center justify-center gap-2">
                     <i class="fas fa-lock"></i> Proceed to Checkout
                 </a>
                 <p class="text-xs text-gray-400 text-center mt-3">

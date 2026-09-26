@@ -76,7 +76,8 @@
                                         </div>
                                         <div>
                                             <p class="font-semibold text-gray-800 text-sm truncate">
-                                                {{ auth()->user()->name }}</p>
+                                                {{ auth()->user()->name }}
+                                            </p>
                                             <p class="text-xs text-gray-500 truncate">{{ auth()->user()->email }}</p>
                                         </div>
                                     </div>
@@ -90,7 +91,7 @@
                                     class="flex items-center px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 transition-colors duration-200">
                                     <i class="fas fa-user w-4 h-4 mr-3 text-gray-400"></i> My Profile
                                 </a>
-                                <a href=""
+                                <a href="{{ route('my-orders') }}"
                                     class="flex items-center px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-700 transition-colors duration-200">
                                     <i class="fas fa-shopping-bag w-4 h-4 mr-3 text-gray-400"></i> My Orders
                                 </a>
@@ -142,7 +143,9 @@
     </nav>
 
     <div class="hero-gradient absolute inset-0 opacity-90"></div>
-    {{-- <div class="absolute inset-0 bg-[url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGvZT_kopqGLp2jsRcnLDKs9fac5r9aoh0SYN4WVfDUw&s=10')] bg-repeat opacity-100"></div> --}}
+    {{-- <div
+        class="absolute inset-0 bg-[url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGvZT_kopqGLp2jsRcnLDKs9fac5r9aoh0SYN4WVfDUw&s=10')] bg-repeat opacity-100">
+    </div> --}}
     <div class="absolute inset-0 bg-purple-400 bg-repeat opacity-100"></div>
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 lg:py-32">
         <div class="max-w-4xl mx-auto text-center text-white animate-fade-in">
@@ -321,7 +324,8 @@
                             <h3 class="font-heading font-semibold text-lg text-secondary">{{ $hotel->company_name }}
                             </h3>
                             <p class="text-gray-500 text-sm"><i class="fas fa-map-marker-alt text-primary w-4"></i>
-                                {{ $hotel->city ?? 'Nepal' }}</p>
+                                {{ $hotel->city ?? 'Nepal' }}
+                            </p>
                             <div class="flex flex-wrap gap-1 mt-2">
                                 @php
                                     $menuItems = $hotel->menuItems->take(3);
@@ -338,9 +342,10 @@
 
                             <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
                                 <span class="text-sm text-gray-500">Min. order: <span
-                                        class="font-semibold text-gray-700">$10</span></span>
+                                        class="font-semibold text-gray-700">Rs. 100</span></span>
                                 <a href="{{ route('hotels.menu', $hotel->id) }}"
-                                    class="btn-primary py-2 px-4 text-sm">View Menu</a>
+                                    class="btn-primary py-2 px-4 text-sm">View
+                                    Menu</a>
                             </div>
                         </div>
                     </div>
@@ -366,7 +371,8 @@
                             <div class="p-4">
                                 <h3 class="font-heading font-semibold text-lg text-secondary">Grand Plaza Hotel</h3>
                                 <p class="text-gray-500 text-sm"><i
-                                        class="fas fa-map-marker-alt text-primary w-4"></i> Kathmandu, Nepal</p>
+                                        class="fas fa-map-marker-alt text-primary w-4"></i>
+                                    Kathmandu, Nepal</p>
                                 <div class="flex flex-wrap gap-1 mt-2">
                                     <span
                                         class="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">Nepali</span>
@@ -429,29 +435,35 @@
                             <p class="text-sm text-gray-500 line-clamp-2">{{ Str::limit($item->description, 60) }}</p>
                             <p class="text-sm text-gray-500 mt-1">
                                 <i class="fas fa-utensils text-primary"></i>
-                                {{ $item->vendor->company_name ?? 'Unknown Hotel' }}
+                                {{ $item->vendors->company_name }}
                             </p>
                             <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
                                 <div>
                                     @if ($item->dicount > 0)
                                         <span
-                                            class="text-sm text-gray-400 line-through">${{ number_format($item->price, 2) }}</span>
+                                            class="text-sm text-gray-400 line-through">Rs.{{ number_format($item->price, 2) }}</span>
                                         <span
-                                            class="text-lg font-bold text-primary ml-2">${{ number_format($item->price - $item->dicount, 2) }}</span>
+                                            class="text-lg font-bold text-primary ml-2">Rs.{{ number_format($item->price - $item->dicount, 2) }}</span>
                                     @else
                                         <span
-                                            class="text-lg font-bold text-primary">${{ number_format($item->price, 2) }}</span>
+                                            class="text-lg font-bold text-primary">Rs.{{ number_format($item->price) }}</span>
                                     @endif
                                 </div>
                                 @auth
                                     <button
-                                        onclick="addToCart({{ $item->id }}, '{{ addslashes($item->tittle) }}', {{ $item->price - ($item->dicount ?? 0) }})"
-                                        class="btn-primary py-1.5 px-4 text-sm">
+                                        onclick="addToCart(
+                                        {{ $item->id }},
+                                        @js($item->tittle),
+                                        {{ $item->price - ($item->dicount ?? 0) }},
+                                        @js($item->image ? asset('storage/' . $item->image) : ''),
+                                        1
+                                    )"
+                                        class="btn-primary py-1.5 px-4 text-sm menu-add-to-cart">
                                         <i class="fas fa-plus mr-1"></i> Add
                                     </button>
                                 @else
-                                    <button class="btn-primary py-1.5 px-4 text-sm">
-                                       <a href="{{ route('login') }}"> <i class="fas fa-plus mr-1"></i> Add</a>
+                                    <button class="btn-primary py-1.5 px-4">
+                                        <a href="{{ route('login') }}"> <i class="fas fa-plus mr-1"></i> Add</a>
                                     </button>
                                 @endauth
                             </div>
@@ -627,6 +639,34 @@
                         this.classList.remove('bg-green-500', 'hover:bg-green-600');
                         this.classList.add('btn-primary');
                     }, 2000);
+                });
+            });
+
+
+            document.querySelectorAll('.menu-add-to-cart').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    const id = this.dataset.id;
+                    const name = this.dataset.name;
+                    const price = parseFloat(this.dataset.price);
+
+                    if (typeof window.addToCart === 'function') {
+                        window.addToCart(id, name, price);
+                    } else {
+                        console.error('addToCart not loaded!');
+                    }
+
+                    // Button feedback
+                    const originalHTML = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-check mr-1"></i> Added';
+                    this.classList.remove('btn-primary');
+                    this.classList.add('bg-green-500', 'hover:bg-green-600');
+                    setTimeout(() => {
+                        this.innerHTML = originalHTML;
+                        this.classList.remove('bg-green-500', 'hover:bg-green-600');
+                        this.classList.add('btn-primary');
+                    }, 1000);
                 });
             });
         });
