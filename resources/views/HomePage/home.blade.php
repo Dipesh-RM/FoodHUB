@@ -295,7 +295,7 @@
                     <h2 class="text-3xl md:text-4xl font-heading font-bold text-secondary mb-1">Featured Hotels</h2>
                     <p class="text-gray-600">Discover top-rated hotels near you</p>
                 </div>
-                <a href="{{ route('hotels.index') }}"
+                <a href="{{ route('search') }}"
                     class="text-primary hover:text-primary-dark font-medium flex items-center gap-1 mt-2 sm:mt-0">
                     View All <i class="fas fa-arrow-right text-sm"></i>
                 </a>
@@ -403,7 +403,7 @@
                     <h2 class="text-3xl md:text-4xl font-heading font-bold text-secondary mb-1">Popular Menu Items</h2>
                     <p class="text-gray-600">Most ordered dishes from local hotels</p>
                 </div>
-                <a href="{{ route('food.search') }}"
+                <a href="{{ route('search') }}"
                     class="text-primary hover:text-primary-dark font-medium flex items-center gap-1 mt-2 sm:mt-0">
                     View All <i class="fas fa-arrow-right text-sm"></i>
                 </a>

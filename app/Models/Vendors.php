@@ -61,7 +61,7 @@ class Vendors extends Authenticatable
         return $this->hasMany(Chart::class);
     }
     public function order(){
-        return $this->hasMany(Order::class);
+        return $this->hasMany(Order::class, 'vendor_id');
     }
     public function orderitem(){
         return $this->hasMany(OrderItem::class);

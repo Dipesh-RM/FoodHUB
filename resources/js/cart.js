@@ -30,13 +30,21 @@ function saveCart(cart) {
 function updateCartBadge() {
     const cart = getCart();
     const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
+    const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
-    // Update ALL cart badges on the page
+    // Update all count badges
     document.querySelectorAll('.cart-badge').forEach(badge => {
         badge.textContent = totalItems;
     });
 
-    console.log('Cart badge updated to:', totalItems); // For debugging
+    // Update all total displays
+    document.querySelectorAll('.cart-total').forEach(el => {
+        el.textContent = 'Rs.' + totalPrice.toLocaleString('en-IN', {
+            maximumFractionDigits: 2
+        });
+    });
+
+    console.log('Cart updated → items:', totalItems, 'total:', totalPrice);
     return totalItems;
 }
 
@@ -252,7 +260,7 @@ function renderCart() {
                     </div>
                     <div class="flex justify-between">
                         <span class="text-gray-600">Tax (13%)</span>
-                        <span class="font-semibold">Rs.${tax}</span>
+                        <span class="font-semibold">Rs.${tax.toFixed(2)}</span>
                     </div>
                     <div class="border-t border-gray-200 pt-3">
                         <div class="flex justify-between">

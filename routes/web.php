@@ -31,7 +31,7 @@ Route::get('/hotels', [PageController::class, 'home'])->name('hotels.index');
 Route::get('/hotel/{id}', [PageController::class, 'show'])->name('hotels.show');
 
 // Food Search
-Route::get('/food', [SearchController::class, 'foodSearch'])->name('food.search');
+// Route::get('/food', [SearchController::class, 'foodSearch'])->name('food.search');
 
 // Hotel Menu View
 Route::get('/hotel/{id}/menu', [HotelController::class, 'menu'])->name('hotels.menu');
